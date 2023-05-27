@@ -1,0 +1,36 @@
+#ifndef USER_HPP
+#define USER_HPP
+
+#include <string>
+
+using namespace std;
+
+class user
+{
+public:
+    user(int id = -1,string name = "",string pwd = "", string state = "offline")
+    :m_id(id), m_name(name), m_password(pwd), m_state(state)
+    {
+
+    }
+
+    void setId(int id) { m_id = id; }
+    void setName(string name) { m_name = name; }
+    void setPassword(string pwd) { m_password = pwd; }
+    void setState(string state) { m_state = state; }
+
+    int getId(int id) { return m_id; }
+    string getName(string name) { return m_name; }
+    string getPassword(string pwd) { return m_password; }
+    string getState(string state) { return m_state; }
+    
+
+private:
+    int m_id;
+    string m_name;
+    string m_password;
+    string m_state;
+
+};
+
+#endif
