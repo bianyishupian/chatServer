@@ -6,5 +6,5 @@ CXX_FLAGS = -g
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/include -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/include/server -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/thirdparty 
+CXX_INCLUDES = -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/include -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/include/server -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/include/server/db -I/home/user/cpp/chatServer/{PROJECT_SOURCE_DIR}/thirdparty 
 

@@ -14,6 +14,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../{PROJECT_SOURCE_DIR}/include"
   "../{PROJECT_SOURCE_DIR}/include/server"
+  "../{PROJECT_SOURCE_DIR}/include/server/db"
   "../{PROJECT_SOURCE_DIR}/thirdparty"
   )
 
