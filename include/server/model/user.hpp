@@ -19,10 +19,10 @@ public:
     void setPassword(string pwd) { m_password = pwd; }
     void setState(string state) { m_state = state; }
 
-    int getId(int id) { return m_id; }
-    string getName(string name) { return m_name; }
-    string getPassword(string pwd) { return m_password; }
-    string getState(string state) { return m_state; }
+    int getId() { return m_id; }
+    string getName() { return m_name; }
+    string getPassword() { return m_password; }
+    string getState() { return m_state; }
     
 
 private:
