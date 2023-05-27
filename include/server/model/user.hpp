@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// user表的ORM层
+// user表的ORM类
 class User
 {
 public:
