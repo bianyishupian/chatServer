@@ -1,4 +1,4 @@
-#include "../../../include/server/db/database.h"
+#include "../../../include/server/database/database.h"
 
 // 初始化数据库连接
 MySQL::MySQL()
@@ -22,6 +22,11 @@ bool MySQL::connect()
     {
         // 设置编码为gbk，c/c++默认编码为ASCII，如果不设置会乱码
         mysql_query(m_conn, "set names gbk");
+        LOG_INFO << "connect MySql success!";
+    }
+    else
+    {
+        LOG_INFO << "connect MySql fail!";
     }
     return p;
 }
@@ -46,4 +51,9 @@ MYSQL_RES *MySQL::query(string sql)
         return nullptr;
     }
     return mysql_use_result(m_conn);
+}
+// 获取连接
+MYSQL* MySQL::getConnection()
+{
+    return m_conn;
 }

@@ -5,10 +5,11 @@
 
 using namespace std;
 
-class user
+// user表的ORM层
+class User
 {
 public:
-    user(int id = -1,string name = "",string pwd = "", string state = "offline")
+    User(int id = -1,string name = "",string pwd = "", string state = "offline")
     :m_id(id), m_name(name), m_password(pwd), m_state(state)
     {
 
