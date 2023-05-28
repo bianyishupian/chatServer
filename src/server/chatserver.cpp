@@ -31,6 +31,8 @@ void ChatServer::connectionCallback(const TcpConnectionPtr &conn)
     // 客户端断开连接
     if (!conn->connected())
     {
+        // 异常退出
+        ChatService::instance()->clientCloseException(conn);
         conn->shutdown(); // close(fd)
         // m_loop->quit();
     }

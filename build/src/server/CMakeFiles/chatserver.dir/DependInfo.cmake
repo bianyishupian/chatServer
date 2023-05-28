@@ -6,7 +6,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/user/cpp/chatServer/src/server/chatserver.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/chatserver.cpp.o"
   "/home/user/cpp/chatServer/src/server/chatservice.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/chatservice.cpp.o"
+  "/home/user/cpp/chatServer/src/server/database/database.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/database/database.cpp.o"
   "/home/user/cpp/chatServer/src/server/main.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/main.cpp.o"
+  "/home/user/cpp/chatServer/src/server/model/friendmodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/friendmodel.cpp.o"
+  "/home/user/cpp/chatServer/src/server/model/offlinemsgmodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/offlinemsgmodel.cpp.o"
+  "/home/user/cpp/chatServer/src/server/model/usermodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/usermodel.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -14,7 +18,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../{PROJECT_SOURCE_DIR}/include"
   "../{PROJECT_SOURCE_DIR}/include/server"
-  "../{PROJECT_SOURCE_DIR}/include/server/db"
+  "../{PROJECT_SOURCE_DIR}/include/server/database"
   "../{PROJECT_SOURCE_DIR}/thirdparty"
   )
 
