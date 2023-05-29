@@ -16,6 +16,10 @@ ChatService::ChatService()
     m_msgHandlerMap.insert({REG_MSG, std::bind(&ChatService::reg, this, _1, _2, _3)});
     m_msgHandlerMap.insert({ONE_CHAT_MSG, std::bind(&ChatService::oneChat, this, _1, _2, _3)});
     m_msgHandlerMap.insert({ADD_FRIEND_MSG, std::bind(&ChatService::addFriend, this, _1, _2, _3)});
+
+    m_msgHandlerMap.insert({CREAT_GROUP_MSG, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
+    m_msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
+    m_msgHandlerMap.insert({GROUP_CHAT_MAG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
 }
 
 void ChatService::reset()
@@ -198,4 +202,57 @@ void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp ti
     int friendid = js["friendid"].get<int>();
 
     m_friendModel.insert(userid, friendid);
+}
+
+// 创建群组业务
+void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    string name = js["groupname"];
+    string desc = js["groupdesc"];
+
+    Group group(-1, name, desc); // id自增的，会在createGroup函数中再返回来
+    if (m_groupModel.createGroup(group))
+    {
+        m_groupModel.addGroup(userid, group.getId(), "creator");
+    }
+}
+// 加入群组业务
+void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    m_groupModel.addGroup(userid, groupid, "normal");
+}
+// 群组聊天业务
+void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    vector<int> useridVec = m_groupModel.queryGroupUsers(userid, groupid);
+
+    lock_guard<mutex> lock(m_connMutex);
+    for (int id : useridVec)
+    {
+        auto it = m_userConnMap.find(id);
+        if(it != m_userConnMap.end())
+        {
+            // 转发群消息
+            it->second->send(js.dump());
+        }
+        else
+        {
+            m_offlineMsgModel.insert(id, js.dump());
+            // 查询toid是否在线 
+            // User user = m_userModel.query(id);
+            // if(user.getState() == "online")
+            // {
+            //      m_redis.publish(id, js.dump());
+            // }
+            // else
+            // {
+            //     m_offlineMsgModel.insert(id, js.dump());
+            // }
+        }
+    }
 }

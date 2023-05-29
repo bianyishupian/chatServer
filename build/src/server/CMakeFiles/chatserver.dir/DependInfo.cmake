@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/user/cpp/chatServer/src/server/database/database.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/database/database.cpp.o"
   "/home/user/cpp/chatServer/src/server/main.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/main.cpp.o"
   "/home/user/cpp/chatServer/src/server/model/friendmodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/friendmodel.cpp.o"
+  "/home/user/cpp/chatServer/src/server/model/groupmodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/groupmodel.cpp.o"
   "/home/user/cpp/chatServer/src/server/model/offlinemsgmodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/offlinemsgmodel.cpp.o"
   "/home/user/cpp/chatServer/src/server/model/usermodel.cpp" "/home/user/cpp/chatServer/build/src/server/CMakeFiles/chatserver.dir/model/usermodel.cpp.o"
   )

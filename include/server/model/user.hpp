@@ -26,7 +26,7 @@ public:
     string getState() { return m_state; }
     
 
-private:
+protected:
     int m_id;
     string m_name;
     string m_password;
