@@ -21,7 +21,7 @@ public:
     int getId() { return this->m_id; }
     string getName() { return this->m_name; }
     string getDesc() { return this->m_desc; }
-    vector<GroupUser> getUsers() { return this->m_users; }
+    vector<GroupUser> &getUsers() { return this->m_users; }
 
 private:
     int m_id;

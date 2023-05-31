@@ -24,7 +24,7 @@ void GroupModel::addGroup(int userid, int groupid, string role)
 {
     // 组装SQL
     char sql[1024] = {0};
-    sprintf(sql, "insert into GroupUser values(%d, %d, '%s')", userid, groupid, role.c_str());
+    sprintf(sql, "insert into GroupUser values(%d, %d, '%s')", groupid, userid, role.c_str());
 
     MySQL mysql;
     if (mysql.connect())

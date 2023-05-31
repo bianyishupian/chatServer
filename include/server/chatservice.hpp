@@ -27,6 +27,8 @@ public:
     static ChatService* instance();
     // 处理登录
     void login(const TcpConnectionPtr &conn, json &js, Timestamp time);
+    // 处理退出
+    void loginOut(const TcpConnectionPtr &conn, json &js, Timestamp time);
     // 处理注册
     void reg(const TcpConnectionPtr &conn, json &js, Timestamp time);
     // 一对一聊天

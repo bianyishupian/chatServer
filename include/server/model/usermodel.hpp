@@ -12,7 +12,7 @@ public:
     // 根据id查询user信息
     User query(int id);
     // 更新用户状态信息
-    bool updataState(User user);
+    bool updateState(User user);
     // 重置用户状态信息
     void resetState();
 };

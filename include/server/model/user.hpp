@@ -15,15 +15,15 @@ public:
 
     }
 
-    void setId(int id) { m_id = id; }
-    void setName(string name) { m_name = name; }
-    void setPassword(string pwd) { m_password = pwd; }
-    void setState(string state) { m_state = state; }
+    void setId(int id) { this->m_id = id; }
+    void setName(string name) { this->m_name = name; }
+    void setPassword(string pwd) { this->m_password = pwd; }
+    void setState(string state) { this->m_state = state; }
 
-    int getId() { return m_id; }
-    string getName() { return m_name; }
-    string getPassword() { return m_password; }
-    string getState() { return m_state; }
+    int getId() { return this->m_id; }
+    string getName() { return this->m_name; }
+    string getPassword() { return this->m_password; }
+    string getState() { return this->m_state; }
     
 
 protected:

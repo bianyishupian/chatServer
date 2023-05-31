@@ -56,7 +56,7 @@ User UserModel::query(int id)
 }
 
 // 更新用户状态信息
-bool UserModel::updataState(User user)
+bool UserModel::updateState(User user)
 {
     // 1.组装sql语句
     char sql[1024] = {0};
