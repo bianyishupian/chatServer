@@ -4,6 +4,8 @@
 // moduo库的日志
 #include <muduo/base/Logging.h>
 
+#include <iostream>
+
 ChatService *ChatService::instance()
 {
     static ChatService service;
@@ -21,6 +23,11 @@ ChatService::ChatService()
     m_msgHandlerMap.insert({CREATE_GROUP_MSG, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
     m_msgHandlerMap.insert({ADD_GROUP_MSG, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
     m_msgHandlerMap.insert({GROUP_CHAT_MSG, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
+
+    if (m_redis.connect())
+    {
+        m_redis.init_notify_handler(std::bind(&ChatService::redisHandler, this, _1, _2));
+    }
 }
 
 void ChatService::reset()
@@ -71,6 +78,10 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
                 lock_guard<mutex> lock(m_connMutex);
                 m_userConnMap.insert({id, conn});
             }
+
+            // id用户登录成功后，向redis订阅channel(id)
+            m_redis.subscribe(id);
+
             // 更新用户信息 state offline -> online
             user.setState("online");
             m_userModel.updateState(user);
@@ -162,7 +173,7 @@ void ChatService::loginOut(const TcpConnectionPtr &conn, json &js, Timestamp tim
     }
 
     // 用户注销，相当于就是下线，在redis中取消订阅通道
-    // _redis.unsubscribe(userid); 
+    m_redis.unsubscribe(userid);
 
     // 更新用户的状态信息
     User user(userid, "", "", "offline");
@@ -213,6 +224,9 @@ void ChatService::clientCloseException(const TcpConnectionPtr &conn)
         }
     }
 
+    // 用户注销，相当于就是下线，在redis中取消订阅通道
+    m_redis.unsubscribe(user.getId());
+
     // 更新用户状态为offline
     if (user.getId() != -1)
     {
@@ -236,11 +250,15 @@ void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time
             return;
         }
     }
-    // {"msgid":3, "name":"test", "password":"654321"}
-    // {"msgid":1, "id":2, "password":"654321"}
-    // {"msgid":1, "id":1, "password":"123456"}
-    // {"msgid":5, "id":2, "from":"test", "to":1, "msg":"hello!"}
-    // {"msgid":5, "id":1, "from":"root", "to":2, "msg":"world!"}
+    // 查询toid是否在其他服务器上在线
+    User user = m_userModel.query(toid);
+    if (user.getState() == "online")
+    {
+        m_redis.publish(toid, js.dump());
+        std::cout << " ============== " << std::endl;
+        std::cout << "publish " << std::endl;
+        return;
+    }
 
     // 离线，保存消息
     m_offlineMsgModel.insert(toid, js.dump());
@@ -287,24 +305,38 @@ void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp ti
     for (int id : useridVec)
     {
         auto it = m_userConnMap.find(id);
-        if(it != m_userConnMap.end())
+        if (it != m_userConnMap.end())
         {
             // 转发群消息
             it->second->send(js.dump());
         }
         else
         {
-            m_offlineMsgModel.insert(id, js.dump());
-            // 查询toid是否在线 
-            // User user = m_userModel.query(id);
-            // if(user.getState() == "online")
-            // {
-            //      m_redis.publish(id, js.dump());
-            // }
-            // else
-            // {
-            //     m_offlineMsgModel.insert(id, js.dump());
-            // }
+            // m_offlineMsgModel.insert(id, js.dump());
+            // 查询toid是否在线
+            User user = m_userModel.query(id);
+            if (user.getState() == "online")
+            {
+                m_redis.publish(id, js.dump());
+            }
+            else
+            {
+                m_offlineMsgModel.insert(id, js.dump());
+            }
         }
     }
+}
+
+void ChatService::redisHandler(int userid, string message)
+{
+    lock_guard<mutex> lock(m_connMutex);
+    auto it = m_userConnMap.find(userid);
+    if (it != m_userConnMap.end())
+    {
+        it->second->send(message);
+        return;
+    }
+
+    // 如果发送者在发布消息到redis的时候接收者下线了，我们要存储该用户的离线消息
+    m_offlineMsgModel.insert(userid, message);
 }

@@ -2,10 +2,12 @@
 #define CHATSERVICE_HPP
 
 #include "../../thirdparty/json.hpp"
+#include "redis/redis.hpp"
 #include "model/offlinemsgmodel.hpp"
 #include "model/usermodel.hpp"
 #include "model/friendmodel.hpp"
 #include "model/groupmodel.hpp"
+
 #include <muduo/net/TcpConnection.h>
 #include <unordered_map>
 #include <vector>
@@ -50,6 +52,9 @@ public:
     // 服务端退出的业务重置
     void reset();
 
+    // redis
+    void redisHandler(int channel, string message);
+
 private:
     ChatService();
     // 存储回调的映射
@@ -62,6 +67,8 @@ private:
     FriendModel m_friendModel;
     GroupModel m_groupModel;
     OfflineMsgModel m_offlineMsgModel;
+
+    Redis m_redis;
 };
 
 #endif
